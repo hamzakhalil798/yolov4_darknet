@@ -13,7 +13,8 @@
 #include "connected_layer.h"
 void test_detector_batch(char *datacfg, char *cfgfile, char *weightfile, char *listfile, float thresh,
                          float hier_thresh, int dont_show, int ext_output, int save_labels, char *outfile, int letter_box, int benchmark_layers);
-
+void test_detector_dir(char *datacfg, char *cfgfile, char *weightfile, char *dirname, float thresh,
+                       float hier_thresh, int dont_show, int ext_output, int save_labels, char *outfile, int letter_box, int benchmark_layers);
 extern void predict_classifier(char *datacfg, char *cfgfile, char *weightfile, char *filename, int top);
 extern void run_voxel(int argc, char **argv);
 extern void run_yolo(int argc, char **argv);
@@ -502,6 +503,11 @@ int main(int argc, char **argv)
 		int ext_output = find_arg(argc, argv, "-ext_output");
         char *filename = (argc > 5) ? argv[5]: 0;
         test_detector_batch(argv[2], argv[3], argv[4], filename, thresh, 0.5, 1, ext_output, 1, NULL, 0, 0);
+    } else if (0 == strcmp(argv[1], "detectdir")){
+        float thresh = find_float_arg(argc, argv, "-thresh", .24);
+        int ext_output = find_arg(argc, argv, "-ext_output");
+        char *filename = (argc > 5) ? argv[5]: 0;
+        test_detector_dir(argv[2], argv[3], argv[4], filename, thresh, 0.5, 1, ext_output, 1, NULL, 0, 0);
     } else if (0 == strcmp(argv[1], "cifar")){
         run_cifar(argc, argv);
     } else if (0 == strcmp(argv[1], "go")){

@@ -1633,7 +1633,7 @@ void test_detector_batch(char *datacfg, char *cfgfile, char *weightfile, char *l
     if (outfile) {
         json_file = fopen(outfile, "wb");
         if(!json_file) {
-            error("fopen failed");
+            error("fopen failed", DARKNET_LOC);
         }
         char *tmp = "[\n";
         fwrite(tmp, sizeof(char), strlen(tmp), json_file);
