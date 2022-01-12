@@ -13,8 +13,14 @@
 #include "connected_layer.h"
 void test_detector_batch(char *datacfg, char *cfgfile, char *weightfile, char *listfile, float thresh,
                          float hier_thresh, int dont_show, int ext_output, int save_labels, char *outfile, int letter_box, int benchmark_layers);
+#ifdef __cplusplus
+extern "C" {
+#endif
 void test_detector_dir(char *datacfg, char *cfgfile, char *weightfile, char *dirname, float thresh,
                        float hier_thresh, int dont_show, int ext_output, int save_labels, char *outfile, int letter_box, int benchmark_layers);
+#ifdef __cplusplus
+}
+#endif
 extern void predict_classifier(char *datacfg, char *cfgfile, char *weightfile, char *filename, int top);
 extern void run_voxel(int argc, char **argv);
 extern void run_yolo(int argc, char **argv);
