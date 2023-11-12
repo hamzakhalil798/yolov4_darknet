@@ -1622,6 +1622,34 @@ void calc_anchors(char *datacfg, int num_of_clusters, int width, int height, int
     getchar();
 }
 
+static void extract_filename_without_ext(char *out_filename, const char *filepath, size_t max_len) {
+    const char *last_slash;
+    const char *last_dot;
+    size_t filename_len;
+
+    last_slash = strrchr(filepath, '/');
+    if (last_slash == NULL) {
+        last_slash = filepath;
+    } else {
+        last_slash++;
+    }
+
+    last_dot = strrchr(last_slash, '.');
+    if (last_dot == NULL) {
+        last_dot = filepath + strlen(filepath);
+    }
+
+    filename_len = last_dot - last_slash;
+
+    if (filename_len < max_len) {
+        strncpy(out_filename, last_slash, filename_len);
+        out_filename[filename_len] = '\0';
+    } else {
+        fprintf(stderr, "Error: Buffer is too small for filename.\n");
+        out_filename[0] = '\0';
+    }
+}
+
 void test_detector_batch(char *datacfg, char *cfgfile, char *weightfile, char *listfile, float thresh,
                    float hier_thresh, int dont_show, int ext_output, int save_labels, char *outfile, int letter_box, int benchmark_layers)
 {
@@ -1645,6 +1673,7 @@ void test_detector_batch(char *datacfg, char *cfgfile, char *weightfile, char *l
     }
     srand(2222222);
     char buff[256];
+    char file_leaf[256];
     char *input = buff;
     char *json_buf = NULL;
     int json_image_id = 0;
@@ -1708,7 +1737,8 @@ void test_detector_batch(char *datacfg, char *cfgfile, char *weightfile, char *l
             else diounms_sort(dets, nboxes, l.classes, nms, l.nms_kind, l.beta_nms);
         }
         draw_detections_v3(im, dets, nboxes, thresh, names, alphabet, l.classes, ext_output);
-        sprintf(filename, "predictions_%04d", cnt++);
+        extract_filename_without_ext(file_leaf, input, 256);
+        sprintf(filename, "predictions_%04d_%s", cnt++, file_leaf);
         save_image(im, filename);
         if (!dont_show) {
             show_image(im, "predictions");
