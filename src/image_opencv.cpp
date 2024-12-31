@@ -1016,7 +1016,7 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                 cv::rectangle(*show_img, pt1, pt2, color, width, 8, 0);
                 if (ext_output)
                     printf("\t(left_x: %4.0f   top_y: %4.0f   left: %4.0f   bot: %4.0f)\n",
-                    (float)left, (float)top, (float)right,(float)bot);
+                    (float)left, (float)top, b.w*show_img->cols, b.h*show_img->rows);
                 else
                     printf("\n");
 
